@@ -3,9 +3,11 @@ package kr.ac.jejunu;
 import java.sql.*;
 
 public class UserDao {
+    private final ConnectionMaker connectionMaker = new JejuConnectionMaker();
+
     public User get(int id) throws ClassNotFoundException, SQLException {
         //mysql driver load
-        Connection connection = getConnection(); ;// 컬렉션을 맺어줌  즉 db랑 자바프로젝트랑 연결을 되었다.
+        Connection connection = connectionMaker.getConnection(); ;// 컬렉션을 맺어줌  즉 db랑 자바프로젝트랑 연결을 되었다.
         //sql 작성하고
         PreparedStatement preparedStatement = connection.prepareStatement("select*from userinfo where id=?");//sql을 실행하기위해 preparedStatement는 물음표를 써서 나중에 맵핑할 수 있다. 왜 Statement를 안쓰고 prepared를 할까? 성능이 더 좋아서 프리페어런스를 쓰면 처음들어왔을 때 파싱한번만 하기 때문에!! 쿼리파싱은 이렇게하고 나중에 vvalue만 들여넣는 식으로
         preparedStatement .setInt(1, id);//db는 커서를 가지고 있다.
@@ -28,7 +30,7 @@ public class UserDao {
     }
 
     public Integer insert(User user) throws ClassNotFoundException, SQLException {
-        Connection connection = getConnection(); ;// 컬렉션을 맺어줌  즉 db랑 자바프로젝트랑 연결을 되었다.
+        Connection connection = connectionMaker.getConnection(); ;// 컬렉션을 맺어줌  즉 db랑 자바프로젝트랑 연결을 되었다.
         PreparedStatement preparedStatement = connection.prepareStatement("insert into userinfo(name, password) values(?, ?)");//sql을 실행하기위해 preparedStatement는 물음표를 써서 나중에 맵핑할 수 있다. 왜 Statement를 안쓰고 prepared를 할까? 성능이 더 좋아서 프리페어런스를 쓰면 처음들어왔을 때 파싱한번만 하기 때문에!! 쿼리파싱은 이렇게하고 나중에 vvalue만 들여넣는 식으로
         preparedStatement .setString(1, user.getName());
         preparedStatement .setString(2, user.getPassword());//db는 커서를 가지고 있다.
@@ -45,8 +47,6 @@ public class UserDao {
         return id;
     }
 
-    private Connection getConnection() throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.jdbc.Driver");//이 드라이버를 로딩시켜서 이드라이버의 자원을 사용할 수 있음
-        return DriverManager.getConnection("jdbc:mysql://localhost/ujeju?characterEncoding=utf-8","root",  "alswns8516!");
-    }
+
+
 }
