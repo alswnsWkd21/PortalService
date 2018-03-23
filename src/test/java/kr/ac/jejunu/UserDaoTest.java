@@ -11,16 +11,18 @@ import static org.hamcrest.CoreMatchers.*;
 public class UserDaoTest {
 
     private UserDao jejuuserDao;
+    private DaoFactory daoFactory;
+
 //    private UserDao hallauserDao;
 
     @Before
     public void setup(){
-        jejuuserDao  = new UserDao();
+        jejuuserDao  = daoFactory.getUserDao();
     }
 
     @Test
     public void get() throws SQLException, ClassNotFoundException {
-        jejuuserDao = new UserDao();
+
         int id =1;
         User user = jejuuserDao.get(1);
         assertThat(user.getId(), is(    1));
