@@ -20,7 +20,7 @@ public class UserDaoTest {
 
     @Test
     public void get() throws SQLException, ClassNotFoundException {
-        jejuuserDao = new JejuUserDao();
+        jejuuserDao = new UserDao();
         int id =1;
         User user = jejuuserDao.get(1);
         assertThat(user.getId(), is(    1));
