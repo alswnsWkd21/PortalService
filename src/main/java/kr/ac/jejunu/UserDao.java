@@ -23,7 +23,6 @@ public class UserDao {
         user.setId(resultSet.getInt(    "id"));
         user.setName(resultSet.getString(   "name"));
         user.setPassword(resultSet.getString(   "password"));
-
         //        자원을 해지하고
         resultSet.close();// 항상 스트림을 형성하기 때문에 마지막에는 자원을 끊어줘야 한다.
         preparedStatement.close();
@@ -43,8 +42,6 @@ public class UserDao {
         ResultSet resultSet = preparedStatement.executeQuery();
         resultSet.next();
         Integer id = resultSet.getInt(    1);
-
-
         resultSet.close();
         preparedStatement.close();
         connection.close();
