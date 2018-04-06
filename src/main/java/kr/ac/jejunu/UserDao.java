@@ -1,12 +1,13 @@
 package kr.ac.jejunu;
 
+import javax.sql.DataSource;
 import java.sql.*;
 
 public class UserDao {
-    private final ConnectionMaker connectionMaker;
+    private final DataSource dataSource;
 
-    public UserDao(ConnectionMaker connectionMaker) {
-        this.connectionMaker = connectionMaker;
+    public UserDao(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     public User get(int id) throws ClassNotFoundException, SQLException {
@@ -14,17 +15,18 @@ public class UserDao {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        User user;
+        User user = null;
         try {
-            connection = connectionMaker.getConnection();
+            connection = dataSource.getConnection();
             preparedStatement = connection.prepareStatement("select * from userinfo where id = ?");
             preparedStatement.setInt(1, id);
             resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            user = new User();
-            user.setId(resultSet.getInt("id"));
-            user.setName(resultSet.getString("name"));
-            user.setPassword(resultSet.getString("password"));
+            if (resultSet.next()) {
+                user = new User();
+                user.setId(resultSet.getInt("id"));
+                user.setName(resultSet.getString("name"));
+                user.setPassword(resultSet.getString("password"));
+            }
         } finally {
             if (resultSet != null)
                 try {
@@ -58,7 +60,7 @@ public class UserDao {
         ResultSet resultSet = null;
         Integer id;
         try {
-            connection = connectionMaker.getConnection();
+            connection = dataSource.getConnection();
             preparedStatement = connection.prepareStatement(
                     "insert into userinfo(name, password) values (?, ?)");
             preparedStatement.setString(1, user.getName());
@@ -93,4 +95,63 @@ public class UserDao {
     }
 
 
+    public void update(User user) throws ClassNotFoundException, SQLException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        Integer id;
+        try {
+            connection = dataSource.getConnection();
+            preparedStatement = connection.prepareStatement(
+                    "update userinfo set name = ?, password = ? where id = ?");
+            preparedStatement.setString(1, user.getName());
+            preparedStatement.setString(2, user.getPassword());
+            preparedStatement.setInt(3, user.getId());
+            preparedStatement.executeUpdate();
+        } finally {
+            if (preparedStatement != null)
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            if (connection != null)
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+        }
+
+
+    }
+
+
+    public void delete(Integer id) throws ClassNotFoundException, SQLException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connection = dataSource.getConnection();
+            preparedStatement = connection.prepareStatement(
+                    "delete from userinfo where id = ?");
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+        } finally {
+            if (preparedStatement != null)
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            if (connection != null)
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+        }
+    }
 }
+
