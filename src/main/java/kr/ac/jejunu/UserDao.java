@@ -1,5 +1,7 @@
 package kr.ac.jejunu;
 
+import org.springframework.beans.factory.parsing.EmptyReaderEventListener;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -20,11 +22,17 @@ public class UserDao {
         String sql = "select * from userinfo where id = ?";
         Object[] params = new Object[]{id};
         return jdbcTemplate.queryForObject(sql, params, (rs, rowNum)->{
-            User user = new User();
-            user.setId(rs.getInt("ud"));
-            user.setName(rs.getString("name"));
-            user.setPassword(rs.getString("password"));
-            return user;
+            try {
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setName(rs.getString("name"));
+                user.setPassword(rs.getString("password"));
+                return user;
+            } catch (EmptyResultDataAccessException e) {
+//                e.printStackTrace();
+//                null출력
+                return null;
+            }
 
         });
     }
