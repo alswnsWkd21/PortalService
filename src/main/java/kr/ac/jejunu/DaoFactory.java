@@ -25,9 +25,9 @@ public class DaoFactory {
     }
 
     @Bean
-    public DataSource dataSource() {
-        SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
-        try {
+            public DataSource dataSource() {
+                SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
+                try {
             dataSource.setDriverClass((Class<? extends Driver>) Class.forName(className));
         } catch (ClassNotFoundException e) {
             new RuntimeException();
