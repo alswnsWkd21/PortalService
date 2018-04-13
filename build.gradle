@@ -22,4 +22,5 @@ version '1.0-SNAPSHOT'
                 compile "org.springframework:spring-jdbc:${springVersion}"
                 compile "org.springframework:spring-tx:${springVersion}"
                 testCompile group: 'junit', name: 'junit', version: '4.11'
+
             }
