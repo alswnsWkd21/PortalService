@@ -33,6 +33,5 @@ public class StaticApplicationContextTest {
         Hello hello = applicationContext.getBean("helloPerson", Hello.class);
         assertThat(hello.sayHello(), is("Hello!!!정민준"));
 
-
    }
 }
