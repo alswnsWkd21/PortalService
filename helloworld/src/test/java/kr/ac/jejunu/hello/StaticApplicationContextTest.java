@@ -28,7 +28,7 @@ public class StaticApplicationContextTest {
         //빈을 하나 정의한다.
         BeanDefinition beanDefinition = new RootBeanDefinition(HelloPerson.class);
         beanDefinition.getPropertyValues().addPropertyValue("name", "정민준");
-        beanDefinition.getPropertyValues().addPropertyValue("hello", new RuntimeBeanReference("hello"));
+        beanDefinition.getConstructorArgumentValues().addGenericArgumentValue( new RuntimeBeanReference("hello"));
         applicationContext.registerBeanDefinition("helloPerson", beanDefinition);
         Hello hello = applicationContext.getBean("helloPerson", Hello.class);
         assertThat(hello.sayHello(), is("Hello!!!정민준"));
