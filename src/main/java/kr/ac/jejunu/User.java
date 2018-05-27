@@ -1,7 +1,9 @@
 package kr.ac.jejunu;
 
-public class User {
+import lombok.Data;
 
+
+public class User {
     public Integer getId() {
         return id;
     }
