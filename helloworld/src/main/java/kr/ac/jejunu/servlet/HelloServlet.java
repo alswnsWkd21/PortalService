@@ -4,15 +4,19 @@ package kr.ac.jejunu.servlet;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
 
 import javax.servlet.GenericServlet;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebServlet;
 import java.io.IOException;
 
 
 @Slf4j
+@WebServlet(urlPatterns="/hello")
+
 public class HelloServlet extends GenericServlet {
     @Override
     public void init() throws ServletException {
